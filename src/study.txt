@@ -1,0 +1,16 @@
+1. first, last 함수
+- first 함수 : 조건을 만족하는 첫번째 인자를 반환
+
+<코드>
+val names = listOf("Duke", "Leonardo", "Sara", "James", "Mino")
+println(names.first{name -> name.length > 4})
+
+<결과> : Duke
+
+- last 함수 : 조건을 만족하는 마지막 인자를 반환
+
+<코드>
+val names = listOf("Duke", "Leonardo", "Sara", "James", "Mino")
+println(names.last{name -> name.length > 4})
+
+<결과> : James
