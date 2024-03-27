@@ -10,6 +10,7 @@ import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.repository.book.BookQuerydslRepository
+import com.group.libraryapp.repository.user.loanhistory.UserLoanHistoryQuerydslRepository
 import com.group.libraryapp.util.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +21,7 @@ class BookService(
     private val bookQuerydslRepository: BookQuerydslRepository,
     private val userRepository: UserRepository,
     private val userLoanHistoryRepository: UserLoanHistoryRepository,
+    private val userLoanHistoryQuerydslRepository: UserLoanHistoryQuerydslRepository,
 ) {
 
     @Transactional
@@ -31,7 +33,7 @@ class BookService(
     @Transactional
     fun loanBook(request: BookLoanRequest) {
         val book = bookRepository.findByName(request.bookName) ?: fail()
-        if (userLoanHistoryRepository.findByBookNameAndStatus(request.bookName, UserLoanStatus.LOANED) != null) {
+        if (userLoanHistoryQuerydslRepository.find(request.bookName, UserLoanStatus.LOANED) != null) {
             throw IllegalArgumentException("진작 대출되어 있는 책입니다.")
         }
 
@@ -53,14 +55,14 @@ class BookService(
 
         // 아래 코드는 쿼리를 실행했을 때 모든 데이터가 아닌 숫자만 가져온다.
         // 즉 위 코드와는 다르게 db및 네트워크의 부하를 줄일 수 있다.
-        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
+        return userLoanHistoryQuerydslRepository.count(UserLoanStatus.LOANED).toInt()
     }
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse> {
         // 아래 코드는 쿼리를 실행했을 때 모든 데이터가 아닌 group by 를 이용해 필요한 데이터만 가져온다.
         // 즉 아래 코드와는 다르게 db및 네트워크의 부하를 줄일 수 있다.
-        return bookQuerydslRepository.getStatus()
+        return bookQuerydslRepository.getStats()
 
         // 아래 코드는 쿼리를 실행했을 때 모든 데이터를 가져와서 메모리 로딩 후 함수형 프로그램에 그룹핑을 한다.
         // 즉 데이터가 많다면 db에 부하를 가져와 성능 저하를 유발할 수 있다.

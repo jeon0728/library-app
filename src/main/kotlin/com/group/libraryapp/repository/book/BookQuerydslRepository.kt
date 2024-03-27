@@ -12,7 +12,7 @@ class BookQuerydslRepository(
     private val queryFactory: JPAQueryFactory,
 ) {
 
-    fun getStatus(): List<BookStatResponse> {
+    fun getStats(): List<BookStatResponse> {
         return queryFactory.select(
             Projections.constructor(
                 BookStatResponse::class.java,
