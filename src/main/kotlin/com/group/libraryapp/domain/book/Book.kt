@@ -27,7 +27,7 @@ class Book(
 
 
     // 엔티티에 속성이 추가 될때마다 테스트 코드를 고쳐야 하는 번거로움을 줄이기 위해 쓰는 방법
-    // 테스트애 이용할 객체를 만드는 함수를 Object Mother 이라고 한다.
+    // 테스트에 이용할 객체를 만드는 함수를 Object Mother 이라고 한다.
     // 이렇게 테스트를 하기위해 생겨난 테스트용 객체를 Test Fixture 라고 한다.
     companion object {
         fun fixture(

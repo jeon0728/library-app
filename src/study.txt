@@ -19,6 +19,9 @@
         }.message
         assertThat(message).isEqualTo(" ") -- 예외 메세지도 검증 가능하다.
 
+    (3). 데이터를 모두 지워주는 clean 함수 내부에 userLoanHistoryRepository가 없는 이유
+        - userRepository.deleteAll()을 수행시 연관관계에 있는 자식 테이블까지 찾아서 모두 지워주기 때문이다.
+
 
 2. first, last 함수
 - first 함수 : 조건을 만족하는 첫번째 인자를 반환

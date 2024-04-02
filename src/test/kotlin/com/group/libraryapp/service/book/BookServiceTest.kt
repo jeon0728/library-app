@@ -32,6 +32,8 @@ class BookServiceTest @Autowired constructor(
     fun clean() {
         bookRepository.deleteAll()
         userRepository.deleteAll()
+        // userLoanHistoryRepository.deleteAll()을 해주지 않는 이유
+        // userRepository.deleteAll()을 실행할 때 연관관계에 있는 자식 테이블까지 찾아서 데이터를 모두 지워주기 때문
     }
 
     @Test
@@ -70,7 +72,7 @@ class BookServiceTest @Autowired constructor(
     }
 
     @Test
-    @DisplayName("책 진작 대출되어 있다면, 신규 대출이 실패한다.")
+    @DisplayName("책이 진작 대출되어 있다면, 신규 대출이 실패한다.")
     fun loanBookFailTest() {
         // given
         bookRepository.save(Book.fixture("이상한 나라의 엘리스"))
